@@ -3,7 +3,7 @@ import { BLOCK_MATRIX, CELLS_BY_BLOCK } from '../../utils'
 
 
 const Board = ({
-    fixedCells, highlightedCells, selectedCell, 
+    fixedCells, highlightedCells, selectedCell, selectedNumber,
     onSelectCell,
     grid
 }) =>
@@ -17,6 +17,7 @@ const Board = ({
                         fixedCells={fixedCells}
                         highlightedCells={highlightedCells}
                         selectedCell={selectedCell}
+                        selectedNumber={selectedNumber}
                         onSelectCell={onSelectCell}
                         grid={grid}
                     />

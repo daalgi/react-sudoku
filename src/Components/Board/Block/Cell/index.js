@@ -1,5 +1,6 @@
 const Cell = ({ 
     cellIndex, value, onSelect,
+    selectedNumber,
     isFixed, isSelected, isHighlighted
 }) => {
     let className = "cell"
@@ -9,10 +10,12 @@ const Cell = ({
         className += " cell-highlighted"
     if (isSelected)
         className += " cell-selected"
+    if (selectedNumber === value)
+        className += " cell-selected-number"
 
     return (
         <div className={className} onClick={() => onSelect(cellIndex)}>
-            {value}
+            {value !== 0 ? value : " "}
         </div>
     )
 }

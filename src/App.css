@@ -19,7 +19,7 @@
 
 .board {
   color: hsl(0, 0%, 67%);
-  font-size: 32px;
+  font-size: 20px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -38,17 +38,25 @@
   display: flex;
   flex-direction: row;
 }
-.cell, .cell-fixed {
+.cell {
   border: solid 2px hsl(0, 0%, 30%);
-  padding: 8px;
-  margin: -1px;  
+  padding: 2px;
+  margin: -1px; 
+  min-width: 28px;
+  height: 28px;
 }
 .cell:hover {
-  background-color: hsl(220, 13%, 27%);
+  background-color: hsl(100, 13%, 30%);
 }
 .cell-fixed {
   color: hsl(0, 0%, 90%);
 }
 .cell-highlighted {
-  background-color: hsl(220, 13%, 30%);
+  background-color: hsl(220, 13%, 24%);
+}
+.cell-selected-number {
+  background-color: hsl(100, 13%, 25%);
+}
+.cell-selected {
+  background-color: hsl(100, 13%, 30%);
 }

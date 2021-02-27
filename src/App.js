@@ -16,8 +16,6 @@ function App() {
     const [selectedCell, setSelectedCell] = useState(0)
     const [highlightedCells, setHighlightedCells] = useState(FALSE_ARRAY)
     const [selectedNumber, setSelectedNumber] = useState(0)
-    const [cellsClassNames, setCellsClassNames] = useState(NULL_ARRAY)
-
 
     useEffect(() => {
         const newFixedCells = [...fixedCells]
@@ -31,8 +29,7 @@ function App() {
         const number = grid[index]
         setHighlightedCells(getHighlightedCells(index))
         setSelectedCell(index)
-        if (number !== 0)
-            setSelectedNumber(number)
+        setSelectedNumber(number)
     }
 
     const handleNewGame = () => {
@@ -46,6 +43,7 @@ function App() {
                 fixedCells={fixedCells}
                 highlightedCells={highlightedCells}
                 selectedCell={selectedCell}
+                selectedNumber={selectedNumber}
                 onSelectCell={handleSelectCell}
                 grid={grid}
             />

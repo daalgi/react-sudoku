@@ -2,7 +2,7 @@ import Cell from './Cell'
 
 const Block = ({ 
     cellsMatrix,
-    fixedCells, highlightedCells, selectedCell, 
+    fixedCells, highlightedCells, selectedCell, selectedNumber,
     onSelectCell,
     grid
 }) =>
@@ -15,6 +15,7 @@ const Block = ({
                         cellIndex={cellIndex}
                         value={grid[cellIndex]}
                         onSelect={onSelectCell}
+                        selectedNumber={selectedNumber}
                         isFixed={fixedCells[cellIndex]}
                         isHighlighted={highlightedCells[cellIndex]}
                         isSelected={selectedCell === cellIndex}
