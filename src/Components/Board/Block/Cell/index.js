@@ -3,7 +3,7 @@ const Cell = ({
     selectedNumber,
     isFixed, isSelected, isHighlighted
 }) => {
-    let className = "cell"
+    let className = "unselectable cell"
     if (isFixed)
         className += " cell-fixed"
     if (isHighlighted)

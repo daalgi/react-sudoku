@@ -4,7 +4,7 @@ import { BLOCK_MATRIX, CELLS_BY_BLOCK } from '../../utils'
 
 const Board = ({
     fixedCells, highlightedCells, selectedCell, selectedNumber,
-    onSelectCell,
+    onSelectCell, 
     grid
 }) =>
     <div className="board">
