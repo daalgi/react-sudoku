@@ -1,6 +1,5 @@
 const Header = () =>
     <header className="App-header">
-        <p>New Game</p>
         <p><a
             className="App-link"
             href="https://daalgi.github.io/my-site/#/"
@@ -9,6 +8,7 @@ const Header = () =>
         >
             David A.G.
         </a></p>
+        <p>New Game</p>
     </header>
 
 export default Header

@@ -16,3 +16,39 @@
 .App-link {
   color: #61dafb;
 }
+
+.board {
+  color: hsl(0, 0%, 67%);
+  font-size: 32px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.block-row {
+  display: flex;
+  flex-direction: row;
+}
+.block {
+  border: solid 4px hsl(0, 0%, 50%);
+  margin: -2px;
+  display: flex;
+  flex-direction: column;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+}
+.cell, .cell-fixed {
+  border: solid 2px hsl(0, 0%, 30%);
+  padding: 8px;
+  margin: -1px;  
+}
+.cell:hover {
+  background-color: hsl(220, 13%, 27%);
+}
+.cell-fixed {
+  color: hsl(0, 0%, 90%);
+}
+.cell-highlighted {
+  background-color: hsl(220, 13%, 30%);
+}
