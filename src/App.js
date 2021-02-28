@@ -12,7 +12,7 @@ import {
 
 
 function App() {
-    const [nonEmptyCells, setNonEmptyCells] = useState(35)
+    const [nonEmptyCells, setNonEmptyCells] = useState(50)
     const [fixedCells, setFixedCells] = useState(FALSE_ARRAY)
     const [grid, setGrid] = useState([])
     const [solution, setSolution] = useState([])
@@ -28,11 +28,8 @@ function App() {
         setGrid(newGrid)
         setSolution(newSolution)
         setGridInputStack(GRID_INPUTS.map((v, i) => [newGrid[i]]))
-        const newFixedCells = [...fixedCells]
-        newFixedCells[0] = true
-        newFixedCells[1] = true
-        newFixedCells[2] = true
-        setFixedCells(newFixedCells)
+        setFixedCells(newGrid.map(v => v ? true : false))
+        setSelectedNumber(false)
     }, [])
 
     useKeyPress((e) => {
@@ -47,8 +44,8 @@ function App() {
 
     const handleSelectCell = index => {
         const number = grid[index]
-        if (number > 0)
-            setHighlightedCells(getHighlightedCells(index))
+        
+        setHighlightedCells(getHighlightedCells(index))
         setSelectedCell(index)
         setSelectedNumber(number > 0 ? number : null)
     }

@@ -1,6 +1,6 @@
 const SIZE = 81
-const ROWS = Math.sqrt(SIZE)
-const BLOCK_SIZE = Math.sqrt(ROWS)
+const SIDE_LENGTH = Math.sqrt(SIZE)
+const BLOCK_SIZE = Math.sqrt(SIDE_LENGTH)
 
 const FALSE_ARRAY = Array(SIZE).fill(false)
 const NULL_ARRAY = Array(SIZE).fill(null)
@@ -20,7 +20,7 @@ const CELLS_BY_BLOCK = {
 }
 
 const matrixIndices = arrayIndex =>
-    [Math.floor(arrayIndex / ROWS), arrayIndex % ROWS]
+    [Math.floor(arrayIndex / SIDE_LENGTH), arrayIndex % SIDE_LENGTH]
 
 
 const getRowNumber = i => {
@@ -41,7 +41,7 @@ const getBlockNumber = i => {
     // from left to right and from top to bottom.
     // Only valid for 9x9 grids.
     const [_, col] = matrixIndices(i)
-    return Math.floor(i / ROWS / BLOCK_SIZE) * BLOCK_SIZE +
+    return Math.floor(i / SIDE_LENGTH / BLOCK_SIZE) * BLOCK_SIZE +
         Math.floor(col / BLOCK_SIZE)
 }
 
@@ -75,19 +75,152 @@ const getHighlightedCells = index => {
             areInSameBlock({ i, index }) ? true : false)
 }
 
-// const generateBoard = ({ nonEmptyCells }) => {
-//     return [
-//         [1, 2, 3, 4, 5, 6, 7, 8, 9],
-//         [7, 8, 9, 1, 2, 3, 4, 5, 6],
-//         [4, 5, 6, 7, 8, 9, 1, 2, 3],
-//         [3, 4, 5, 6, 7, 8, 9, 1, 2],
-//         [9, 1, 2, 3, 4, 5, 6, 7, 8],
-//         [6, 7, 8, 9, 1, 2, 3, 4, 5],
-//         [5, 6, 7, 8, 9, 1, 2, 3, 4],
-//         [2, 3, 4, 5, 6, 7, 8, 9, 1],
-//         [8, 9, 1, 2, 3, 4, 5, 6, 7],
-//     ]
-// }
+
+/**
+ * Shuffle array - Fisher-Yates algorithm.
+ * Mutable. 
+ * @param {array} arr 
+ */
+const shuffle = arr => {
+    let j, temp
+    for (let i = arr.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1))
+        temp = arr[i]
+        arr[i] = arr[j]
+        arr[j] = temp
+        // [arr[i], arr[j]] = [arr[j], arr[i]]
+    }
+    return arr
+}
+
+/**
+ * Random choice of an element within an array
+ * @param {array} arr 
+ */
+const choice = arr =>
+    arr[Math.floor(Math.random() * arr.length)]
+
+/**
+ * Randomly cipher the numbers in the Sudoku array.
+ * Mutable.
+ * @param {array} arr - Sudoku array
+ */
+const cipher = arr => {
+    let mask = Array(SIDE_LENGTH).fill(0).map((_, i) => i + 1)
+    shuffle(mask)
+    for (let i = 0; i < arr.length; i++) {
+        arr[i] = mask[arr[i] - 1]
+    }
+    return arr
+}
+
+/**
+ * Returns a random row index within the block
+ * to which `i` belongs to.
+ * Used to swap valid rows or columns.
+ * @param {integer} i 
+ */
+const randomIntWithinBlockIndex = i => {
+    let arr = []
+    if ([0, 1, 2].includes(i)) {
+        arr = [0, 1, 2]
+    } else if ([3, 4, 5].includes(i)) {
+        arr = [3, 4, 5]
+    } else {
+        arr = [6, 7, 8]
+    }
+    return choice(arr.filter(v => v != i))
+}
+
+/**
+ * Returns an array of two integers, which
+ * are the indices of rows or columns to be
+ * swapped within a block 
+ */
+const randomIndicesPairWithinBlock = () => {
+    let i = Math.floor(Math.random() * SIDE_LENGTH)
+    return [i, randomIntWithinBlockIndex(i)]
+}
+
+/**
+ * Swaps two rows `i` and `j` in a Sudoku array .
+ * Mutable.
+ * @param {array} arr - Sudoku array
+ * @param {integer} i - row
+ * @param {integer} j - row 
+ */
+const swapRow = (arr, i, j) => {
+    let temp = undefined
+    for (let col = 0; col < SIDE_LENGTH; col++) {
+        temp = arr[SIDE_LENGTH * i + col]
+        arr[SIDE_LENGTH * i + col] = arr[SIDE_LENGTH * j + col]
+        arr[SIDE_LENGTH * j + col] = temp
+    }
+    return arr
+}
+
+/**
+ * Swaps two columns `i` and `j` in a Sudoku array.
+ * Mutable.
+ * @param {array} arr - Sudoku array
+ * @param {integer} i - column
+ * @param {integer} j - column
+ */
+const swapColumn = (arr, i, j) => {
+    let temp = undefined
+    for (let row = 0; row < SIDE_LENGTH; row++) {
+        temp = arr[row * SIDE_LENGTH + i]
+        arr[row * SIDE_LENGTH + i] = arr[row * SIDE_LENGTH + j]
+        arr[row * SIDE_LENGTH + j] = temp
+    }
+    return arr
+}
+
+/**
+ * Rotates 90 degrees the Sudoku grid.
+ * Non-mutable.
+ * @param {array} arr - Sudoku array
+ */
+const rotate = arr => {
+    let copy = Array(SIZE).fill(0)
+    for (let row = 0; row < SIDE_LENGTH; row++) {
+        for (let col = 0; col < SIDE_LENGTH; col++) {
+            copy[col * SIDE_LENGTH + SIDE_LENGTH - 1 - row] = arr[row * SIDE_LENGTH + col]
+        }
+    }
+    return copy
+}
+
+/**
+ * Vertical mirroring.
+ * Non-mutable
+ * @param {array} arr - Sudoku array
+ */
+const verticalMirroring = arr => {
+    let copy = Array(SIZE).fill(0)
+    for (let row = 0; row < SIDE_LENGTH; row++) {
+        for (let col = 0; col < SIDE_LENGTH; col++) {
+            copy[row * SIDE_LENGTH + col] = arr[(SIDE_LENGTH - row - 1) * SIDE_LENGTH + col]
+        }
+    }
+    return copy
+}
+
+/**
+ * Horizontal mirroring.
+ * Non-mutable
+ * @param {array} arr - Sudoku array
+ */
+const horizontalMirroring = arr => {
+    let copy = Array(SIZE).fill(0)
+    for (let row = 0; row < SIDE_LENGTH; row++) {
+        for (let col = 0; col < SIDE_LENGTH; col++) {
+            copy[row * SIDE_LENGTH + col] = arr[row * SIDE_LENGTH + (SIDE_LENGTH - col - 1)]
+        }
+    }
+    return copy
+}
+
 const DEFAULT_SUDOKU = [
     1, 2, 3, 4, 5, 6, 7, 8, 9,
     7, 8, 9, 1, 2, 3, 4, 5, 6,
@@ -96,14 +229,49 @@ const DEFAULT_SUDOKU = [
     9, 1, 2, 3, 4, 5, 6, 7, 8,
     6, 7, 8, 9, 1, 2, 3, 4, 5,
     5, 6, 7, 8, 9, 1, 2, 3, 4,
-    2, 3, 4, 5, 6, 7, 8, 0, 0,
-    8, 9, 1, 2, 3, 4, 5, 0, 0,
+    2, 3, 4, 5, 6, 7, 8, 9, 1,
+    8, 9, 1, 2, 3, 4, 5, 6, 7,
 ]
 
 const generateBoard = ({ nonEmptyCells }) => {
+    let emptyCells = SIZE - nonEmptyCells
 
-    let solution = [...DEFAULT_SUDOKU]
-    return [solution, solution]
+    // Generate a valid solution
+    let solution = cipher([...DEFAULT_SUDOKU])
+    // let solution = [...DEFAULT_SUDOKU]    
+    swapRow(solution, ...randomIndicesPairWithinBlock())
+    swapColumn(solution, ...randomIndicesPairWithinBlock())
+    
+    solution = rotate(solution)
+    swapRow(solution, ...randomIndicesPairWithinBlock())
+    swapColumn(solution, ...randomIndicesPairWithinBlock())
+    
+    solution = verticalMirroring(solution)
+    swapRow(solution, ...randomIndicesPairWithinBlock())
+    swapColumn(solution, ...randomIndicesPairWithinBlock())
+    
+    solution = horizontalMirroring(solution)
+    swapRow(solution, ...randomIndicesPairWithinBlock())
+    swapColumn(solution, ...randomIndicesPairWithinBlock())
+
+    // Empty random cells
+    let grid = [...solution]
+    let i
+    while (emptyCells > 0) {
+        // Random index
+        i = Math.floor(Math.random() * SIZE)
+        // let [row, col] = matrixIndices(i)
+        grid[i] = 0
+
+        // Symmetric index
+        // j = (SIDE_LENGTH - 1 - row) * SIDE_LENGTH + SIDE_LENGTH - 1 - col
+        // grid[j] = 0
+
+        // Subtract the emptied cells
+        emptyCells--
+    }
+
+    return [grid, solution]
 }
 
 const GRID_INPUTS = Array(SIZE).fill(null).map(() => [])
