@@ -88,21 +88,30 @@ const getHighlightedCells = index => {
 //         [8, 9, 1, 2, 3, 4, 5, 6, 7],
 //     ]
 // }
-const generateBoard = [
-    0, 2, 3, 4, 5, 6, 7, 8, 9,
+const DEFAULT_SUDOKU = [
+    1, 2, 3, 4, 5, 6, 7, 8, 9,
     7, 8, 9, 1, 2, 3, 4, 5, 6,
     4, 5, 6, 7, 8, 9, 1, 2, 3,
     3, 4, 5, 6, 7, 8, 9, 1, 2,
     9, 1, 2, 3, 4, 5, 6, 7, 8,
     6, 7, 8, 9, 1, 2, 3, 4, 5,
     5, 6, 7, 8, 9, 1, 2, 3, 4,
-    2, 3, 4, 5, 6, 7, 8, 9, 1,
-    8, 9, 1, 2, 3, 4, 5, 6, 0,
+    2, 3, 4, 5, 6, 7, 8, 0, 0,
+    8, 9, 1, 2, 3, 4, 5, 0, 0,
 ]
+
+const generateBoard = ({ nonEmptyCells }) => {
+
+    let solution = [...DEFAULT_SUDOKU]
+    return [solution, solution]
+}
+
+const GRID_INPUTS = Array(SIZE).fill(null).map(() => [])
 
 module.exports = {
     FALSE_ARRAY,
     NULL_ARRAY,
+    GRID_INPUTS,
     BLOCK_MATRIX,
     CELLS_BY_BLOCK,
     matrixIndices,
