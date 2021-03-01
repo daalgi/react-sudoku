@@ -5,13 +5,13 @@ import Header from './Components/Header'
 import Board from './Components/Board'
 import Controls from './Components/Controls'
 import {
-    FALSE_ARRAY, NULL_ARRAY, BLOCK_MATRIX,
-    CELLS_BY_BLOCK, GRID_INPUTS,
+    FALSE_ARRAY, GRID_INPUTS,
     getHighlightedCells, generateBoard
 } from './utils'
 
 
 function App() {
+    const [time, setTime] = useState(0)
     const [nonEmptyCells, setNonEmptyCells] = useState(20)
     const [fixedCells, setFixedCells] = useState(FALSE_ARRAY)
     const [grid, setGrid] = useState([])
@@ -23,14 +23,14 @@ function App() {
     const [inputCellIndexStack, setInputCellIndexStack] = useState([])
 
     useEffect(() => {
-        // Initialize parameters
-        const [newGrid, newSolution] = generateBoard({ nonEmptyCells })
-        setGrid(newGrid)
-        setSolution(newSolution)
-        setGridInputStack(GRID_INPUTS.map((v, i) => [newGrid[i]]))
-        setFixedCells(newGrid.map(v => v ? true : false))
-        setSelectedNumber(false)
+        handleNewGame()
     }, [])
+
+    useEffect(() => {
+        // Timer
+        let interval = setInterval(() => setTime(time + 1), 1000)
+        return () => clearInterval(interval)
+    }, [time])
 
     useKeyPress((e) => {
         // e.preventDefault()
@@ -40,6 +40,10 @@ function App() {
             handleInput(parseInt(e.key))
         else if (e.key === "Delete")
             handleDelete()
+        else if (e.key === "h")
+            handleHint()
+        else if (e.key === "u")
+            handleUndo()
     })
 
     const handleSelectCell = index => {
@@ -104,7 +108,13 @@ function App() {
     }
 
     const handleNewGame = () => {
-        let arr = generateBoard({ nonEmptyCells })
+        const [newGrid, newSolution] = generateBoard({ nonEmptyCells })
+        setGrid(newGrid)
+        setSolution(newSolution)
+        setGridInputStack(GRID_INPUTS.map(() => []))
+        setFixedCells(newGrid.map(v => v ? true : false))
+        setSelectedNumber(false)
+        setTime(0)
     }
 
     // console.log(({
@@ -118,7 +128,7 @@ function App() {
 
     return (
         <div className="App">
-            <Header />
+            <Header onNewGame={handleNewGame} time={time}/>
             <Board
                 fixedCells={fixedCells}
                 highlightedCells={highlightedCells}
