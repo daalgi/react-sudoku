@@ -12,7 +12,7 @@ import {
 
 
 function App() {
-    const [nonEmptyCells, setNonEmptyCells] = useState(50)
+    const [nonEmptyCells, setNonEmptyCells] = useState(20)
     const [fixedCells, setFixedCells] = useState(FALSE_ARRAY)
     const [grid, setGrid] = useState([])
     const [solution, setSolution] = useState([])
@@ -72,12 +72,9 @@ function App() {
     }
 
     const handleDelete = () => {
-        handleInput(0)
-        // setGrid(grid.map((n, i) => i === selectedCell ? 0 : n))
-        // setSelectedCell(null)
-        // setSelectedNumber(null)
-        // setGridInputs(gridInputs.map((v, i) => 
-        //         i === selectedCell ? v.push(0) : v))
+        // If the cell is not fixed, delete the number it contains
+        if(!fixedCells[selectedCell])
+            handleInput(0)
     }
 
     const handleUndo = () => {
@@ -99,6 +96,13 @@ function App() {
         setInputCellIndexStack(inputCellIndexStack.slice(0, -1))
     }
 
+    const handleHint = () => {
+        // If the cell is not fixed, input the solution
+        if (!fixedCells[selectedCell]) {
+            handleInput(solution[selectedCell])
+        }
+    }
+
     const handleNewGame = () => {
         let arr = generateBoard({ nonEmptyCells })
     }
@@ -108,8 +112,8 @@ function App() {
     //     isFixed: fixedCells[selectedCell],
     //     value: grid[selectedCell]
     // }))
-    console.log('------')
-    console.log(inputCellIndexStack)
+    // console.log('------')
+    // console.log(inputCellIndexStack)
     // console.log()
 
     return (
@@ -127,6 +131,7 @@ function App() {
                 onNumberClick={handleInput}
                 onUndo={handleUndo}
                 onDelete={handleDelete}
+                onHint={handleHint}
             />
         </div>
     )
