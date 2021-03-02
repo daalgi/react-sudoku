@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import useKeyPress from './hooks/useKeyPress'
 import './App.css'
 import Header from './Components/Header'
+import OptionsMenu from './Components/OptionsMenu'
 import Board from './Components/Board'
 import Controls from './Components/Controls'
 import {
@@ -11,14 +12,21 @@ import {
 
 
 function App() {
+    // Options related state variables
     const [time, setTime] = useState(0)
+    const [solved, setSolved] = useState(false)
     const [nonEmptyCells, setNonEmptyCells] = useState(35)
+    const [checkMistakes, setCheckMistakes] = useState(false)
+    
+    // Board related state variables
     const [fixedCells, setFixedCells] = useState(FALSE_ARRAY)
     const [grid, setGrid] = useState([])
     const [solution, setSolution] = useState([])
     const [selectedCell, setSelectedCell] = useState(null)
     const [highlightedCells, setHighlightedCells] = useState(FALSE_ARRAY)
     const [selectedNumber, setSelectedNumber] = useState(0)
+    
+    // Undo realted state variables
     const [gridInputStack, setGridInputStack] = useState([])
     const [inputCellIndexStack, setInputCellIndexStack] = useState([])
 
@@ -28,7 +36,10 @@ function App() {
 
     useEffect(() => {
         // Timer
-        let interval = setInterval(() => setTime(time + 1), 1000)
+        let interval
+        if (!solved) {
+            interval = setInterval(() => setTime(time + 1), 1000)
+        }        
         return () => clearInterval(interval)
     }, [time])
 
@@ -38,7 +49,7 @@ function App() {
             return
         if (e.key > 0 && e.key < 10)
             handleInput(parseInt(e.key))
-        else if (e.key === "Delete")
+        else if (e.key === "Delete" || e.key === "Backspace")
             handleDelete()
         else if (e.key === "h")
             handleHint()
@@ -48,16 +59,22 @@ function App() {
 
     const handleSelectCell = index => {
         const number = grid[index]
-
         setHighlightedCells(getHighlightedCells(index))
         setSelectedCell(index)
         setSelectedNumber(number > 0 ? number : null)
     }
 
+    const handleChangeCheckMistakes = () => 
+        setCheckMistakes(!checkMistakes)
+
     const handleInput = number => {
+        if (fixedCells[selectedCell])
+            return
+
         if (number > -1 && number < 10) {
             // Update the grid
-            setGrid(grid.map((n, i) => i === selectedCell ? parseInt(number) : n))
+            let newGrid = grid.map((n, i) => i === selectedCell ? parseInt(number) : n)
+            setGrid(newGrid)
 
             // Update the `gridInputStack` with the 
             // added number to the current cell
@@ -72,6 +89,12 @@ function App() {
             // update the current selected number (for highlighting)
             if (number > 0)
                 setSelectedNumber(number)
+
+            // If solved
+            if (newGrid.every((v, i) => v === solution[i])) {
+                setSolved(true)
+                alert("You solved it!!\nCongratulations!!")
+            }
         }
     }
 
@@ -118,33 +141,30 @@ function App() {
         setFixedCells(newGrid.map(v => v ? true : false))
         setSelectedNumber(false)
         setTime(0)
+        setSolved(false)
     }
-
-    // console.log(({
-    //     selectedCell, 
-    //     isFixed: fixedCells[selectedCell],
-    //     value: grid[selectedCell]
-    // }))
-    // console.log('------')
-    // console.log(inputCellIndexStack)
-    // console.log()
-    console.log(nonEmptyCells)
 
     return (
         <div className="App">
             <Header
                 onNewGame={handleNewGame}
+            />
+            <OptionsMenu
                 time={time}
                 nonEmptyCells={nonEmptyCells}
                 onChangeDifficulty={handleChangeDifficulty}
+                checkMistakes={checkMistakes}
+                onChangeCheckMistakes={handleChangeCheckMistakes}
             />
             <Board
+                checkMistakes={checkMistakes}
                 fixedCells={fixedCells}
                 highlightedCells={highlightedCells}
                 selectedCell={selectedCell}
                 selectedNumber={selectedNumber}
                 onSelectCell={handleSelectCell}
                 grid={grid}
+                solution={solution}
             />
             <Controls
                 onNumberClick={handleInput}

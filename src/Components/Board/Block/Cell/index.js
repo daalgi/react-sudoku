@@ -1,7 +1,7 @@
 const Cell = ({ 
     cellIndex, value, onSelect,
-    selectedNumber,
-    isFixed, isSelected, isHighlighted
+    selectedNumber, checkMistakes,
+    isFixed, isSelected, isHighlighted, isCorrect
 }) => {
     let className = "unselectable cell"
     if (isFixed)
@@ -12,6 +12,8 @@ const Cell = ({
         className += " cell-selected"
     if (selectedNumber === value)
         className += " cell-selected-number"
+    if (checkMistakes && value != 0 && !isCorrect)
+        className += " red-text"
 
     return (
         <div className={className} onClick={() => onSelect(cellIndex)}>

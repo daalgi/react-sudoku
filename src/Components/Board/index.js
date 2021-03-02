@@ -5,7 +5,7 @@ import { BLOCK_MATRIX, CELLS_BY_BLOCK } from '../../utils'
 const Board = ({
     fixedCells, highlightedCells, selectedCell, selectedNumber,
     onSelectCell, 
-    grid
+    grid, solution, checkMistakes
 }) =>
     <div className="board">
         {BLOCK_MATRIX.map((row, rowIndex) =>
@@ -13,6 +13,7 @@ const Board = ({
                 {row.map((blockIndex, colIndex) => {
                     return <Block
                         key={colIndex}
+                        checkMistakes={checkMistakes}
                         cellsMatrix={CELLS_BY_BLOCK[blockIndex]}
                         fixedCells={fixedCells}
                         highlightedCells={highlightedCells}
@@ -20,6 +21,7 @@ const Board = ({
                         selectedNumber={selectedNumber}
                         onSelectCell={onSelectCell}
                         grid={grid}
+                        solution={solution}
                     />
                 }
                 )}
