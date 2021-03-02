@@ -12,7 +12,7 @@ import {
 
 function App() {
     const [time, setTime] = useState(0)
-    const [nonEmptyCells, setNonEmptyCells] = useState(20)
+    const [nonEmptyCells, setNonEmptyCells] = useState(35)
     const [fixedCells, setFixedCells] = useState(FALSE_ARRAY)
     const [grid, setGrid] = useState([])
     const [solution, setSolution] = useState([])
@@ -48,7 +48,7 @@ function App() {
 
     const handleSelectCell = index => {
         const number = grid[index]
-        
+
         setHighlightedCells(getHighlightedCells(index))
         setSelectedCell(index)
         setSelectedNumber(number > 0 ? number : null)
@@ -58,7 +58,7 @@ function App() {
         if (number > -1 && number < 10) {
             // Update the grid
             setGrid(grid.map((n, i) => i === selectedCell ? parseInt(number) : n))
-            
+
             // Update the `gridInputStack` with the 
             // added number to the current cell
             // to keep track of the order of inputs and allow undo
@@ -77,7 +77,7 @@ function App() {
 
     const handleDelete = () => {
         // If the cell is not fixed, delete the number it contains
-        if(!fixedCells[selectedCell])
+        if (!fixedCells[selectedCell])
             handleInput(0)
     }
 
@@ -107,6 +107,9 @@ function App() {
         }
     }
 
+    const handleChangeDifficulty = value =>
+        setNonEmptyCells(parseInt(value))
+
     const handleNewGame = () => {
         const [newGrid, newSolution] = generateBoard({ nonEmptyCells })
         setGrid(newGrid)
@@ -125,10 +128,16 @@ function App() {
     // console.log('------')
     // console.log(inputCellIndexStack)
     // console.log()
+    console.log(nonEmptyCells)
 
     return (
         <div className="App">
-            <Header onNewGame={handleNewGame} time={time}/>
+            <Header
+                onNewGame={handleNewGame}
+                time={time}
+                nonEmptyCells={nonEmptyCells}
+                onChangeDifficulty={handleChangeDifficulty}
+            />
             <Board
                 fixedCells={fixedCells}
                 highlightedCells={highlightedCells}

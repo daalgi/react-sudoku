@@ -261,14 +261,19 @@ const generateBoard = ({ nonEmptyCells }) => {
         // Random index
         i = Math.floor(Math.random() * SIZE)
         // let [row, col] = matrixIndices(i)
-        grid[i] = 0
+        
+        if (grid[i] != 0) {
+            grid[i] = 0
+            // Subtract the emptied cells
+            emptyCells--
+        }
+        
 
         // Symmetric index
         // j = (SIDE_LENGTH - 1 - row) * SIDE_LENGTH + SIDE_LENGTH - 1 - col
         // grid[j] = 0
 
-        // Subtract the emptied cells
-        emptyCells--
+        
     }
 
     return [grid, solution]
