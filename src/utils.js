@@ -1,3 +1,6 @@
+/**
+ * SUDOKU CONFIGURATION PARAMETERS
+ */ 
 const SIZE = 81
 const SIDE_LENGTH = Math.sqrt(SIZE)
 const BLOCK_SIZE = Math.sqrt(SIDE_LENGTH)
@@ -19,62 +22,78 @@ const CELLS_BY_BLOCK = {
     8: [[60, 61, 62], [69, 70, 71], [78, 79, 80]],
 }
 
+/**
+ * Given the index of a flat array, 
+ * returns the row and column of the matrix equivalent.
+ * @param {integer} arrayIndex 
+ */
 const matrixIndices = arrayIndex =>
     [Math.floor(arrayIndex / SIDE_LENGTH), arrayIndex % SIDE_LENGTH]
 
+/**
+ * Given the array index `i`, get the row number,
+ * between 0 and 8 (only valid for 9x9 grids)
+ * @param {integer} i 
+ */
+const getRowNumber = i => matrixIndices(i)[0]
 
-const getRowNumber = i => {
-    // Given the array index `i`, 
-    // get the row number, between 0 and 8.
-    // Only valid for 9x9 grids.
-    return matrixIndices(i)[0]
-}
-const getColumnNumber = i => {
-    // Given the array index `i`, 
-    // get the column number, between 0 and 8.
-    // Only valid for 9x9 grids.
-    return matrixIndices(i)[1]
-}
+/**
+ * Given the array index `i`, get the column number,
+ * between 0 and 8 (only valid for 9x9 grids)
+ * @param {integer} i 
+ */
+const getColumnNumber = i => matrixIndices(i)[1]
+
+/**
+ * Given the array index `i`, get the block number, 
+ * between 0 and 8, from left to right and from top to bottom.
+ * Only valid for 9x9 grids.
+ * @param {integer} i 
+ */
 const getBlockNumber = i => {
-    // Given the array index `i`, 
-    // get the block number, between 0 and 8, 
-    // from left to right and from top to bottom.
-    // Only valid for 9x9 grids.
-    const [_, col] = matrixIndices(i)
+    const col = matrixIndices(i)[1]
     return Math.floor(i / SIDE_LENGTH / BLOCK_SIZE) * BLOCK_SIZE +
         Math.floor(col / BLOCK_SIZE)
 }
 
-const areInSameRow = ({ i, index }) => {
-    // Do the array indices `i` and `index` 
-    // belong to the same row ?
-    return getRowNumber(i) === getRowNumber(index)
-}
-const areInSameColumn = ({ i, index }) => {
-    // Do the array indices `i` and `index` 
-    // belong to the same column ?
-    return getColumnNumber(i) === getColumnNumber(index)
-}
-const areInSameBlock = ({ i, index }) => {
-    // Do the array indices `i` and `index` 
-    // belong to the same block ?
-    return getBlockNumber(i) === getBlockNumber(index)
-}
+/**
+ * Do array indices `i` and `index` belong to the same row?
+ * @param {integer} i
+ * @param {integer} index
+ */
+const areInSameRow = ({ i, index }) =>
+    getRowNumber(i) === getRowNumber(index)
 
-const getHighlightedCells = index => {
-    // Returns an array of booleans, which indicate
-    // whether a cell should be highlighted or not.
-    // The ones to be highlighted are in the same
-    // row, column or block as the cell in the array index `index`.
-    // Only valid for 9x9 grids.
+/**
+ * Do array indices `i` and `index` belong to the same column?
+ * @param {integer} i
+ * @param {integer} index
+ */
+const areInSameColumn = ({ i, index }) =>
+    getColumnNumber(i) === getColumnNumber(index)
 
-    let [row, col] = matrixIndices(index)
-    return FALSE_ARRAY.map((_, i) =>
+/**
+ * Do array indices `i` and `index` belong to the same block?
+ * @param {integer} i
+ * @param {integer} index
+ */
+const areInSameBlock = ({ i, index }) =>
+    getBlockNumber(i) === getBlockNumber(index)
+
+
+/**
+ * Returns an array of booleans, which indicate whether a cell
+ * should be highlighted or not.
+ * The ones to be highlighted are in the same row, column
+ * and block as the cell in the array index `index`.
+ * Only valid for 9x9 grids.
+ * @param {integer} index 
+ */
+const getHighlightedCells = index =>
+    FALSE_ARRAY.map((_, i) =>
         areInSameRow({ i, index }) ||
-            areInSameColumn({ i, index }) ||
-            areInSameBlock({ i, index }) ? true : false)
-}
-
+        areInSameColumn({ i, index }) ||
+        areInSameBlock({ i, index }) ? true : false)
 
 /**
  * Shuffle array - Fisher-Yates algorithm.
@@ -221,7 +240,7 @@ const horizontalMirroring = arr => {
     return copy
 }
 
-const DEFAULT_SUDOKU = [
+const BASE_VALID_SUDOKU = [
     1, 2, 3, 4, 5, 6, 7, 8, 9,
     7, 8, 9, 1, 2, 3, 4, 5, 6,
     4, 5, 6, 7, 8, 9, 1, 2, 3,
@@ -233,23 +252,28 @@ const DEFAULT_SUDOKU = [
     8, 9, 1, 2, 3, 4, 5, 6, 7,
 ]
 
+/**
+ * Generates a random 9x9 sudoku from the 
+ * `DEFAULT_SUDOKU` array previously defined
+ * @param {integer} nonEmptyCells - number of non-empty cells
+ */
 const generateBoard = ({ nonEmptyCells }) => {
     let emptyCells = SIZE - nonEmptyCells
 
     // Generate a valid solution
-    let solution = cipher([...DEFAULT_SUDOKU])
+    let solution = cipher([...BASE_VALID_SUDOKU])
     // let solution = [...DEFAULT_SUDOKU]    
     swapRow(solution, ...randomIndicesPairWithinBlock())
     swapColumn(solution, ...randomIndicesPairWithinBlock())
-    
+
     solution = rotate(solution)
     swapRow(solution, ...randomIndicesPairWithinBlock())
     swapColumn(solution, ...randomIndicesPairWithinBlock())
-    
+
     solution = verticalMirroring(solution)
     swapRow(solution, ...randomIndicesPairWithinBlock())
     swapColumn(solution, ...randomIndicesPairWithinBlock())
-    
+
     solution = horizontalMirroring(solution)
     swapRow(solution, ...randomIndicesPairWithinBlock())
     swapColumn(solution, ...randomIndicesPairWithinBlock())
@@ -261,19 +285,12 @@ const generateBoard = ({ nonEmptyCells }) => {
         // Random index
         i = Math.floor(Math.random() * SIZE)
         // let [row, col] = matrixIndices(i)
-        
+
         if (grid[i] != 0) {
             grid[i] = 0
             // Subtract the emptied cells
             emptyCells--
         }
-        
-
-        // Symmetric index
-        // j = (SIDE_LENGTH - 1 - row) * SIDE_LENGTH + SIDE_LENGTH - 1 - col
-        // grid[j] = 0
-
-        
     }
 
     return [grid, solution]
@@ -287,8 +304,6 @@ module.exports = {
     GRID_INPUTS,
     BLOCK_MATRIX,
     CELLS_BY_BLOCK,
-    matrixIndices,
-    getBlockNumber,
     getHighlightedCells,
     generateBoard
 }
