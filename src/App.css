@@ -12,13 +12,12 @@
   flex-direction: row;
   align-items: center;
   justify-content:space-between;
-  font-size: calc(10px + 2vmin);
-  
+  font-size: calc(10px + 2vmin);  
 }
 
 .App-link {
-  color: #61dafb;
-  font-size: 20px;
+  color: hsl(207, 70%, 77%);
+  font-size: 16px;
 }
 .row {
   display: flex;
@@ -34,14 +33,15 @@
 }
 
 .controls {
-  margin-top: 6px;
+  margin-top: 32px;
+  max-width: fit-content;
+  font-size: 24px;  
 }
 
 /* BOARD STYLES */
 .board {
-  color: hsl(0, 0%, 67%);
-  font-size: 20px;
-  width: 100%;
+  color: hsl(207, 70%, 80%);
+  font-size: 22px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -51,33 +51,72 @@
   flex-direction: row;
 }
 .block {
-  border: solid 4px hsl(0, 0%, 50%);
-  margin: -2px;
+  border: solid 2px hsl(0, 0%, 5%);
+  margin: -1px;
   display: flex;
   flex-direction: column;
 }
 .cell {
-  border: solid 2px hsl(0, 0%, 30%);
-  padding: 2px;
+  border: solid 2px hsl(0, 0%, 10%);
   margin: -1px; 
-  min-width: 28px;
-  height: 28px;
+  min-width: 30px;
+  min-height: 30px;
 }
 .cell:hover {
-  background-color: hsl(100, 13%, 30%);
+  background-color: hsla(220, 55%, 40%, 0.986);
 }
 .cell-fixed {
   color: hsl(0, 0%, 90%);
 }
 .cell-highlighted {
-  background-color: hsl(220, 13%, 24%);
+  background-color: hsla(220, 13%, 28%, 0.986);
 }
 .cell-selected-number {
-  background-color: hsl(100, 13%, 25%);
+  background-color: hsla(220, 55%, 30%, 0.986);
 }
 .cell-selected {
-  background-color: hsl(100, 13%, 30%);
+  background-color: hsla(220, 55%, 40%, 0.986);
 }
 .red-text {
-  color: hsl(7, 73%, 79%)
+  color: hsl(7, 63%, 59%)
+}
+
+
+@media (min-width: 360px) {
+  .controls {
+    font-size: 27px;  
+  }
+  .board {
+    font-size: 27px;
+  }
+  .cell {
+    min-width: 36px;
+    min-height: 36px;
+  }
+}
+
+@media (min-width: 400px) {
+  .controls {
+    font-size: 31px;  
+  }
+  .board {
+    font-size: 31px;
+  }
+  .cell {
+    min-width: 40px;
+    min-height: 40px;
+  }
+}
+
+@media (min-width: 700px) {
+  .controls {
+    font-size: 52px;
+  }
+  .board {
+    font-size: 52px;
+  }
+  .cell {
+    min-width: 68px;
+    min-height: 68px;
+  }
 }
