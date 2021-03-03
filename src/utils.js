@@ -298,7 +298,7 @@ const generateBoard = ({ nonEmptyCells }) => {
 
 const GRID_INPUTS = Array(SIZE).fill(null).map(() => [])
 
-module.exports = {
+export {
     FALSE_ARRAY,
     NULL_ARRAY,
     GRID_INPUTS,
