@@ -1,5 +1,5 @@
 const Header = ({ onNewGame }) =>
-    <header className="App-header">
+    <header className="row-center">
         <p><a
             className="App-link"
             href="https://daalgi.github.io/my-site/#/"

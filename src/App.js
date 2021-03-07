@@ -17,7 +17,7 @@ function App() {
     const [solved, setSolved] = useState(false)
     const [nonEmptyCells, setNonEmptyCells] = useState(35)
     const [checkMistakes, setCheckMistakes] = useState(false)
-    
+
     // Board related state variables
     const [fixedCells, setFixedCells] = useState(FALSE_ARRAY)
     const [grid, setGrid] = useState([])
@@ -25,7 +25,7 @@ function App() {
     const [selectedCell, setSelectedCell] = useState(null)
     const [highlightedCells, setHighlightedCells] = useState(FALSE_ARRAY)
     const [selectedNumber, setSelectedNumber] = useState(0)
-    
+
     // Undo realted state variables
     const [gridInputStack, setGridInputStack] = useState([])
     const [inputCellIndexStack, setInputCellIndexStack] = useState([])
@@ -39,7 +39,7 @@ function App() {
         let interval
         if (!solved) {
             interval = setInterval(() => setTime(time + 1), 1000)
-        }        
+        }
         return () => clearInterval(interval)
     }, [time])
 
@@ -64,7 +64,7 @@ function App() {
         setSelectedNumber(number > 0 ? number : null)
     }
 
-    const handleChangeCheckMistakes = () => 
+    const handleChangeCheckMistakes = () =>
         setCheckMistakes(!checkMistakes)
 
     const handleInput = number => {
@@ -130,7 +130,7 @@ function App() {
         }
     }
 
-    const handleChangeDifficulty = value =>
+    const handleChangeDifficulty = ({ value }) =>
         setNonEmptyCells(parseInt(value))
 
     const handleNewGame = () => {
@@ -144,6 +144,7 @@ function App() {
         setSolved(false)
     }
 
+    console.log(nonEmptyCells)
     return (
         <div className="App">
             <Header

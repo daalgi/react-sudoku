@@ -12,7 +12,7 @@ const Cell = ({
         className += " cell-selected"
     if (selectedNumber === value)
         className += " cell-selected-number"
-    if (checkMistakes && value != 0 && !isCorrect)
+    if (checkMistakes && value !== 0 && !isCorrect)
         className += " red-text"
 
     return (

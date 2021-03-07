@@ -8,7 +8,7 @@ const Block = ({
 }) =>
     <div className="block">
         {cellsMatrix.map((row, rowIndex) =>
-            <div className="row" key={rowIndex}> {
+            <div className="cells-row" key={rowIndex}> {
                 row.map((cellIndex, colIndex) =>
                     <Cell
                         key={colIndex}

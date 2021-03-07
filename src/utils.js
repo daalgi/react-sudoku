@@ -148,7 +148,7 @@ const randomIntWithinBlockIndex = i => {
     } else {
         arr = [6, 7, 8]
     }
-    return choice(arr.filter(v => v != i))
+    return choice(arr.filter(v => v !== i))
 }
 
 /**
@@ -286,7 +286,7 @@ const generateBoard = ({ nonEmptyCells }) => {
         i = Math.floor(Math.random() * SIZE)
         // let [row, col] = matrixIndices(i)
 
-        if (grid[i] != 0) {
+        if (grid[i] !== 0) {
             grid[i] = 0
             // Subtract the emptied cells
             emptyCells--

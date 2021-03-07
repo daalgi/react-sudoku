@@ -24,9 +24,11 @@ code {
 
 
 html, body {
+  margin: 0px;
+  padding: 0px;
   height: 100%;
   width: 100%;
-}
+} 
 
 html {
   display: table;
@@ -37,6 +39,6 @@ body {
   display: table-cell;
 }
 
-div {
+/* div {
   margin: auto;
-}
+} */

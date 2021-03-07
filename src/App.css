@@ -1,47 +1,44 @@
 .App {
+  margin: 0px;
+  padding: 0px;
   text-align: center;
-  /* min-height: 100vh; */
-  max-width: 700px;
+  width: 100%;
   color: white;
-}
-
-.App-header {
-  /* min-height: 3vh; */
-  margin: 2px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content:space-between;
-  font-size: calc(10px + 2vmin);  
 }
 
 .App-link {
   color: hsl(207, 70%, 77%);
-  font-size: 16px;
 }
 .row {
+  margin: 2px;
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: center;  
 }
 .button-width100 {
   width: 100%;
 }
 .margin-h {
-  margin-left: 8px;
-  margin-right: 8px;
+  margin: 8px;
 }
-
+.row-center {
+  margin: 2px auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content:space-between;
+}
 .controls {
   margin-top: 32px;
-  max-width: fit-content;
-  font-size: 24px;  
+  width: fit-content;
+  max-width: 100%;
+  margin: auto
 }
+
 
 /* BOARD STYLES */
 .board {
   color: hsl(207, 70%, 80%);
-  font-size: 22px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -54,11 +51,15 @@
   border: solid 2px hsl(0, 0%, 5%);
   margin: -1px;
   display: flex;
-  flex-direction: column;
+  flex-direction: column;  
+}
+.cells-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 .cell {
-  border: solid 2px hsl(0, 0%, 10%);
-  margin: -1px; 
+  border: solid 1px hsl(0, 0%, 10%);
   min-width: 30px;
   min-height: 30px;
 }
@@ -81,13 +82,28 @@
   color: hsl(7, 63%, 59%)
 }
 
+/* SCREEN SIZES */
+@media (min-width: 320px) {
+  .App {
+    font-size: 23px;
+  }
+  .row-center {
+    font-size: 15px;  
+    max-width: 310px;
+  }
+  .cell {
+    min-width: 32px;
+    min-height: 32px;
+  }
+}
 
 @media (min-width: 360px) {
-  .controls {
-    font-size: 27px;  
-  }
-  .board {
+  .App {
     font-size: 27px;
+  }
+  .row-center {
+    font-size: 17px;  
+    max-width: 340px;
   }
   .cell {
     min-width: 36px;
@@ -96,27 +112,29 @@
 }
 
 @media (min-width: 400px) {
-  .controls {
-    font-size: 31px;  
+  .App {
+    font-size: 30px;  
   }
-  .board {
-    font-size: 31px;
+  .row-center {
+    font-size: 20px;  
+    max-width: 380px;
   }
   .cell {
     min-width: 40px;
     min-height: 40px;
   }
-}
+} 
 
-@media (min-width: 700px) {
-  .controls {
-    font-size: 52px;
+ @media (min-width: 500px) {
+  .App {
+    font-size: 36px; 
   }
-  .board {
-    font-size: 52px;
+  .row-center {
+    font-size: 26px;  
+    max-width: 470px;
   }
   .cell {
-    min-width: 68px;
-    min-height: 68px;
+    min-width: 50px;
+    min-height: 50px;
   }
-}
+} 
