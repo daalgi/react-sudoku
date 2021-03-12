@@ -18,6 +18,11 @@
 .button-width100 {
   width: 100%;
 }
+.btn {
+  /* border: solid 2px hsl(0, 48%, 26%); */
+  border-radius: 8px;
+  cursor: pointer;
+}
 .margin-h {
   margin: 8px;
 }
@@ -33,6 +38,22 @@
   width: fit-content;
   max-width: 100%;
   margin: auto
+}
+.img-fit {
+  max-width: 100%;
+  max-height: 100%;
+  align-self: center;
+}
+.align-self {
+  align-self: center;
+}
+.new-game {
+  display: flex;
+  direction: column;
+  align-content: center;
+  justify-content: center;
+  height: 20px;
+  padding: 4px;
 }
 
 
@@ -87,6 +108,10 @@
   .App {
     font-size: 23px;
   }
+  .img-fit {
+    width: 16px;
+    height: 16px;
+  }
   .row-center {
     font-size: 15px;  
     max-width: 310px;
@@ -100,6 +125,10 @@
 @media (min-width: 360px) {
   .App {
     font-size: 27px;
+  }
+  .img-fit {
+    width: 18px;
+    height: 18px;
   }
   .row-center {
     font-size: 17px;  
@@ -115,6 +144,10 @@
   .App {
     font-size: 30px;  
   }
+  .img-fit {
+    width: 20px;
+    height: 20px;
+  }
   .row-center {
     font-size: 20px;  
     max-width: 380px;
@@ -128,6 +161,10 @@
  @media (min-width: 534px) {
   .App {
     font-size: 41px; 
+  }
+  .img-fit {
+    width: 26px;
+    height: 26px;
   }
   .row-center {
     font-size: 26px;  

@@ -41,7 +41,12 @@ function App() {
             interval = setInterval(() => setTime(time + 1), 1000)
         }
         return () => clearInterval(interval)
-    }, [time])
+    }, [time, solved])
+
+    useEffect(() => {
+        if (solved) 
+            alert("You solved it!!\nCongratulations!!\n└@(・◡・)@┐ 🎉🎉🎉")
+    }, [solved])
 
     useKeyPress((e) => {
         // e.preventDefault()
@@ -93,7 +98,6 @@ function App() {
             // If solved
             if (newGrid.every((v, i) => v === solution[i])) {
                 setSolved(true)
-                alert("You solved it!!\nCongratulations!!")
             }
         }
     }
@@ -131,13 +135,18 @@ function App() {
     }
 
     const handleChangeDifficulty = ({ value }) => {
-        setNonEmptyCells(parseInt(value))
-        handleNewGame()
+        let val = parseInt(value)
+        setNonEmptyCells(val)
+        handleNewGame(val)
     }
-        
 
-    const handleNewGame = () => {
-        const [newGrid, newSolution] = generateBoard({ nonEmptyCells })
+    const handleNewGame = (newNonEmptyCells=null) => {
+        console.log(newNonEmptyCells)
+        let nonEmptyCellsValue = newNonEmptyCells ? newNonEmptyCells : nonEmptyCells
+        console.log(nonEmptyCellsValue)
+        const [newGrid, newSolution] = generateBoard({ 
+            nonEmptyCells: nonEmptyCellsValue
+        })
         setGrid(newGrid)
         setSolution(newSolution)
         setGridInputStack(GRID_INPUTS.map(() => []))
@@ -147,7 +156,6 @@ function App() {
         setSolved(false)
     }
 
-    console.log(nonEmptyCells)
     return (
         <div className="App">
             <Header

@@ -2,7 +2,7 @@ import Select from 'react-select'
 
 
 const difficultyOptions = [
-    { value: 53, label: 'Very easy' },
+    { value: 50, label: 'Very easy' },
     { value: 45, label: 'Easy' },
     { value: 35, label: 'Medium' },
     { value: 30, label: 'Hardy' },
