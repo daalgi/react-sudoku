@@ -103,7 +103,7 @@
   }
   .row-center {
     font-size: 17px;  
-    max-width: 340px;
+    max-width: 346px;
   }
   .cell {
     min-width: 36px;
@@ -125,16 +125,20 @@
   }
 } 
 
- @media (min-width: 500px) {
+ @media (min-width: 534px) {
   .App {
-    font-size: 36px; 
+    font-size: 41px; 
   }
   .row-center {
     font-size: 26px;  
-    max-width: 470px;
+    max-width: 518px;
+  }
+  .options-menu {
+    display: grid;
+    grid-template-columns: 180px 50px 65px;
   }
   .cell {
-    min-width: 50px;
-    min-height: 50px;
+    min-width: 55px;
+    min-height: 55px;
   }
 } 

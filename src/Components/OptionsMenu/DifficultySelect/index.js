@@ -14,7 +14,8 @@ const customStyles = {
     control: styles => ({ 
         ...styles, 
         backgroundColor: '#282c34',
-        width: "140px",
+        minWidth: "140px",
+        width: "100%",
         padding: 0,
         margin: 0
     }),

@@ -130,8 +130,11 @@ function App() {
         }
     }
 
-    const handleChangeDifficulty = ({ value }) =>
+    const handleChangeDifficulty = ({ value }) => {
         setNonEmptyCells(parseInt(value))
+        handleNewGame()
+    }
+        
 
     const handleNewGame = () => {
         const [newGrid, newSolution] = generateBoard({ nonEmptyCells })

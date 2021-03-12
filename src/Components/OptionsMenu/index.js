@@ -10,7 +10,7 @@ const OptionsMenu = ({
     checkMistakes,
     onChangeCheckMistakes
 }) =>
-    <div className="row-center">
+    <div className="row-center options-menu">
         <DifficultySelect
             nonEmptyCells={nonEmptyCells}
             onChangeDifficulty={onChangeDifficulty}
