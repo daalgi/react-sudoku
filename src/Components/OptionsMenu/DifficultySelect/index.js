@@ -2,12 +2,12 @@ import Select from 'react-select'
 
 
 const difficultyOptions = [
-    { value: 50, label: 'Very easy' },
-    { value: 45, label: 'Easy' },
+    { value: 45, label: 'Very easy' },
+    { value: 38, label: 'Easy' },
     { value: 35, label: 'Medium' },
     { value: 30, label: 'Hardy' },
-    { value: 25, label: 'Hard' },
-    { value: 20, label: 'Very hard' }
+    { value: 28, label: 'Hard' },
+    { value: 25, label: 'Very hard' }
 ]
 
 const customStyles = {

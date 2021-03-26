@@ -1,6 +1,8 @@
+import collection from './sudokus.json'
+
 /**
  * SUDOKU CONFIGURATION PARAMETERS
- */ 
+ */
 const SIZE = 81
 const SIDE_LENGTH = Math.sqrt(SIZE)
 const BLOCK_SIZE = Math.sqrt(SIDE_LENGTH)
@@ -92,8 +94,8 @@ const areInSameBlock = ({ i, index }) =>
 const getHighlightedCells = index =>
     FALSE_ARRAY.map((_, i) =>
         areInSameRow({ i, index }) ||
-        areInSameColumn({ i, index }) ||
-        areInSameBlock({ i, index }) ? true : false)
+            areInSameColumn({ i, index }) ||
+            areInSameBlock({ i, index }) ? true : false)
 
 /**
  * Shuffle array - Fisher-Yates algorithm.
@@ -120,15 +122,32 @@ const choice = arr =>
     arr[Math.floor(Math.random() * arr.length)]
 
 /**
+ * Random index of an array
+ * @param {array} arr 
+ */
+const randomIndex = arr =>
+    Math.floor(Math.random() * arr.length)
+
+/**
+ * Returns a randomly shuffled array containing
+ * the numbers from 1 to `size`
+ * @param {integer} size 
+ */
+const sudokuNumbersMask = size => 
+    shuffle(Array(size).fill(0).map((_, i) => i + 1))
+
+/**
  * Randomly cipher the numbers in the Sudoku array.
  * Mutable.
  * @param {array} arr - Sudoku array
  */
-const cipher = arr => {
-    let mask = Array(SIDE_LENGTH).fill(0).map((_, i) => i + 1)
-    shuffle(mask)
+const cipher = ({ arr, mask = null }) => {
+    if (!mask) {
+        mask = Array(SIDE_LENGTH).fill(0).map((_, i) => i + 1)
+        shuffle(mask)
+    }
     for (let i = 0; i < arr.length; i++) {
-        arr[i] = mask[arr[i] - 1]
+        arr[i] = arr[i] === 0 ? 0 : mask[arr[i] - 1]
     }
     return arr
 }
@@ -240,6 +259,14 @@ const horizontalMirroring = arr => {
     return copy
 }
 
+const sudokuPermutation = [
+    (arr, indices) => swapRow(arr, ...indices),
+    (arr, indices) => swapColumn(arr, ...indices),
+    (arr, indices) => rotate(arr),
+    (arr, indices) => verticalMirroring(arr),
+    (arr, indices) => horizontalMirroring(arr)
+]
+
 const BASE_VALID_SUDOKU = [
     1, 2, 3, 4, 5, 6, 7, 8, 9,
     7, 8, 9, 1, 2, 3, 4, 5, 6,
@@ -254,15 +281,16 @@ const BASE_VALID_SUDOKU = [
 
 /**
  * Generates a random 9x9 sudoku from the 
- * `DEFAULT_SUDOKU` array previously defined
+ * `BASE_VALID_SUDOKU` array previously defined
  * @param {integer} nonEmptyCells - number of non-empty cells
  */
 const generateBoard = ({ nonEmptyCells }) => {
     let emptyCells = SIZE - nonEmptyCells
 
     // Generate a valid solution
-    let solution = cipher([...BASE_VALID_SUDOKU])
-    // let solution = [...DEFAULT_SUDOKU]    
+    let solution = cipher({
+        arr: [...BASE_VALID_SUDOKU]
+    })
     swapRow(solution, ...randomIndicesPairWithinBlock())
     swapColumn(solution, ...randomIndicesPairWithinBlock())
 
@@ -296,6 +324,66 @@ const generateBoard = ({ nonEmptyCells }) => {
     return [grid, solution]
 }
 
+/**
+ * Generates a random 9x9 sudoku from the 
+ * already computed sudokus in `sudokus.json`
+ * @param {integer} nonEmptyCells - number of non-empty cells
+ *
+ * Difficulty:
+ * easy:    nonEmptyCells >= 38         in json = 38
+ * medium:  29 <= nonEmptyCells < 38    in json = 30
+ * hard:    nonEmptyCells < 28          in json = 28 / 25
+ */
+const generateBoardFromJson = ({ nonEmptyCells }) => {
+    let emptyCells = SIZE - nonEmptyCells
+
+    let grid = []
+    let solution = []
+    let difficulty = null
+    
+    // Import a suitable sudoku depending on difficulty
+    if (nonEmptyCells >= 38) {
+        difficulty = collection.easy
+    } else if (nonEmptyCells >= 29) {
+        difficulty = collection.medium
+    } else {
+        difficulty = collection.hard
+    }
+    let i = randomIndex(difficulty)
+    grid = difficulty[i].board
+    solution = difficulty[i].solution
+
+    // Randomly shuffle the numbers (cipher)
+    let mask = sudokuNumbersMask(9)
+    grid = cipher({ arr: grid, mask })
+    solution = cipher({ arr: solution, mask })
+
+    // Random permutations
+    let num = 10
+    let gridIndices = null
+    let permutationIndex = null
+    for (let i = 0; i < num; i++) {
+        gridIndices = randomIndicesPairWithinBlock()
+        permutationIndex = randomIndex(sudokuPermutation)
+        grid = sudokuPermutation[permutationIndex](grid, gridIndices)
+        solution = sudokuPermutation[permutationIndex](solution, gridIndices)
+    }
+
+    // Uncover the solution of some cells 
+    // to reach the given `nonEmptyCells`
+    let emptyCellIndices = grid
+        .map((v, i) => v === 0 ? i : -1)
+        .filter(v => v !== -1)
+    // console.log(emptyCellIndices)
+    while(emptyCells <= emptyCellIndices.length) {
+        let ii = randomIndex(emptyCellIndices)
+        grid[emptyCellIndices[ii]] = solution[emptyCellIndices[ii]]
+        emptyCellIndices = emptyCellIndices.filter((_, i) => i !== ii)
+    }
+
+    return [grid, solution]
+}
+
 const GRID_INPUTS = Array(SIZE).fill(null).map(() => [])
 
 export {
@@ -305,5 +393,6 @@ export {
     BLOCK_MATRIX,
     CELLS_BY_BLOCK,
     getHighlightedCells,
-    generateBoard
+    generateBoard,
+    generateBoardFromJson
 }

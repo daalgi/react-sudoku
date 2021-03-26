@@ -7,7 +7,7 @@ import Board from './Components/Board'
 import Controls from './Components/Controls'
 import {
     FALSE_ARRAY, GRID_INPUTS,
-    getHighlightedCells, generateBoard
+    getHighlightedCells, generateBoard, generateBoardFromJson
 } from './utils'
 
 
@@ -141,10 +141,11 @@ function App() {
     }
 
     const handleNewGame = (newNonEmptyCells=null) => {
-        console.log(newNonEmptyCells)
+        // console.log(newNonEmptyCells)
         let nonEmptyCellsValue = newNonEmptyCells ? newNonEmptyCells : nonEmptyCells
-        console.log(nonEmptyCellsValue)
-        const [newGrid, newSolution] = generateBoard({ 
+        // console.log(`Non empty cells: ${nonEmptyCellsValue}`)
+        const [newGrid, newSolution] = generateBoardFromJson({
+        // const [newGrid, newSolution] = generateBoard({ 
             nonEmptyCells: nonEmptyCellsValue
         })
         setGrid(newGrid)
