@@ -7,7 +7,8 @@ const difficultyOptions = [
     { value: 35, label: 'Medium' },
     { value: 30, label: 'Hardy' },
     { value: 28, label: 'Hard' },
-    { value: 25, label: 'Very hard' }
+    { value: 25, label: 'Very hard' },
+    { value: 23, label: 'Expert' }
 ]
 
 const customStyles = {

@@ -15,8 +15,8 @@ function App() {
     // Options related state variables
     const [time, setTime] = useState(0)
     const [solved, setSolved] = useState(false)
-    const [nonEmptyCells, setNonEmptyCells] = useState(35)
-    const [checkMistakes, setCheckMistakes] = useState(false)
+    const [nonEmptyCells, setNonEmptyCells] = useState(25)
+    const [checkMistakes, setCheckMistakes] = useState(true)
 
     // Board related state variables
     const [fixedCells, setFixedCells] = useState(FALSE_ARRAY)
