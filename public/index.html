@@ -1,17 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="Sudoku"
-      content="Sudoku webapp"
-    />
-    <title>Sudoku</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-  </body>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="Sudoku" content="Sudoku webapp" />
+  <title>Sudoku</title>
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-analytics.js"></script>
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyB2_WOikmInu74DxEU1wb7ToVwAGQ6Xw0Y",
+      authDomain: "daalgi-react-sudoku.firebaseapp.com",
+      projectId: "daalgi-react-sudoku",
+      storageBucket: "daalgi-react-sudoku.appspot.com",
+      messagingSenderId: "754291799415",
+      appId: "1:754291799415:web:5c748b08b342bf40fd5d72",
+      measurementId: "G-8Y9852GPSM"
+    };
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
+</body>
+
 </html>

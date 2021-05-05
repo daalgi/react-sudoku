@@ -5,7 +5,7 @@ const difficultyOptions = [
     { value: 45, label: 'Very easy' },
     { value: 38, label: 'Easy' },
     { value: 35, label: 'Medium' },
-    { value: 30, label: 'Hardy' },
+    { value: 30, label: 'Hardish' },
     { value: 28, label: 'Hard' },
     { value: 25, label: 'Very hard' },
     { value: 23, label: 'Expert' }

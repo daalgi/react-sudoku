@@ -7,7 +7,7 @@ import Board from './Components/Board'
 import Controls from './Components/Controls'
 import {
     FALSE_ARRAY, GRID_INPUTS,
-    getHighlightedCells, generateBoard, generateBoardFromJson
+    getHighlightedCells, generateBoardFromJson
 } from './utils'
 
 
@@ -15,8 +15,10 @@ function App() {
     // Options related state variables
     const [time, setTime] = useState(0)
     const [solved, setSolved] = useState(false)
-    const [nonEmptyCells, setNonEmptyCells] = useState(25)
-    const [checkMistakes, setCheckMistakes] = useState(true)
+    const [nonEmptyCells, setNonEmptyCells] = useState(
+        parseInt(localStorage.getItem("nonEmptyCells")) || 35)
+    const [checkMistakes, setCheckMistakes] = useState(
+        localStorage.getItem("checkMistakes") === "0" ? false : true)
 
     // Board related state variables
     const [fixedCells, setFixedCells] = useState(FALSE_ARRAY)
@@ -69,8 +71,11 @@ function App() {
         setSelectedNumber(number > 0 ? number : null)
     }
 
-    const handleChangeCheckMistakes = () =>
+    const handleChangeCheckMistakes = () => {
+        localStorage.setItem("checkMistakes", !checkMistakes ? 1 : 0)
+        console.log(localStorage.getItem("checkMistakes"))
         setCheckMistakes(!checkMistakes)
+    }        
 
     const handleInput = number => {
         if (fixedCells[selectedCell])
@@ -136,6 +141,7 @@ function App() {
 
     const handleChangeDifficulty = ({ value }) => {
         let val = parseInt(value)
+        localStorage.setItem("nonEmptyCells", val)
         setNonEmptyCells(val)
         handleNewGame(val)
     }
